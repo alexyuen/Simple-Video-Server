@@ -1,0 +1,700 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Assignment 3</title>
+<style type="text/css">
+ol {
+	margin:0;
+	padding:0
+}
+.c6 {
+	list-style-type:disc;
+	margin:0;
+	padding:0
+}
+.c16 {
+	list-style-type:decimal;
+	margin:0;
+	padding:0
+}
+.c11 {
+}
+.c20 {
+	list-style-type:circle;
+	margin:0;
+	padding:0
+}
+.c13 {
+	list-style-type:square;
+	margin:0;
+	padding:0
+}
+.c1 {
+}
+.c15 {
+	padding-left:0pt;
+	margin-left:108pt
+}
+.c19 {
+	color:#000099;
+	text-decoration:underline
+}
+.c8 {
+	color:#1155cc;
+	text-decoration:underline
+}
+.c5 {
+	padding-left:0pt;
+	margin-left:36pt
+}
+.c12 {
+	color:inherit;
+	text-decoration:inherit
+}
+.c9 {
+	padding-left:0pt;
+	margin-left:72pt
+}
+.c17 {
+	height:12pt
+}
+.c4 {
+	height:11pt
+}
+.c2 {
+	direction:ltr
+}
+.c3 {
+	font-weight:bold
+}
+.c18 {
+	text-align:center
+}
+.c10 {
+	margin-left:36pt
+}
+.c0 {
+	font-family:Verdana
+}
+.c7 {
+	font-style:italic
+}
+.c14 {
+	text-indent:36pt
+}
+.title {
+	padding-top:24pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:36pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:6pt
+}
+.subtitle {
+	padding-top:18pt;
+	line-height:1.0;
+	text-align:left;
+	color:#666666;
+	font-style:italic;
+	font-size:24pt;
+	font-family:Georgia;
+	padding-bottom:4pt
+}
+body {
+	color:#000000;
+	font-size:11pt;
+	font-family:Courier New
+}
+h1 {
+	padding-top:24pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:24pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:6pt
+}
+h2 {
+	padding-top:18pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:18pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:4pt
+}
+h3 {
+	padding-top:14pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:14pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:4pt
+}
+h4 {
+	padding-top:12pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:12pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:2pt
+}
+h5 {
+	padding-top:11pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:11pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom:2pt
+}
+h6 {
+	padding-top:10pt;
+	line-height:1.0;
+	text-align:left;
+	color:#000000;
+	font-size:10pt;
+	font-family:Courier New;
+	font-weight:bold;
+	padding-bottom: 2pt
+}
+</style>
+</head>
+<body class="c11">
+<h2 class="c2 c18"><a name="h.km73p9jpydwk"></a><span class="c0">CPSC 317 -
+    Assignment 3: Streaming Video to Clients</span></h2>
+<p class="c2">
+	<span class="c0">Last Updated: March 25, 2013</span><br>
+	<span class="c0">DUE: 23:59 April 6, 2013.</span>
+</p>
+<p class="c4 c2">
+	<span class="c0"></span>
+</p>
+<p class="c1">
+	<span class="c3 c0">NOTE:</span><span class="c0">&nbsp;This assignment is
+      quite doable on your own. However, you may do this assignment in
+      pairs. As always, you are free to discuss the assignment and ways, at a
+      high level, to solve various parts of the assignment. Ultimately the
+      design and implementation </span><span class="c0 c7">must
+      be</span><span class="c0"> developed by you and your partner, if you are working with one.</span>
+</p>
+<p class="c1">
+	<span class="c0">In this assignment you will implement a more sophisticated
+      version of the server you were provided with in assignment 2. In
+      addition to a regular playback, your server is also expected to support
+      the "Scale" header, which is used to play the video faster. Also, your
+      server should be able to handle video files stored in a cloud storage
+      system.</span>
+</p>
+<p class="c1">
+	<span class="c0">This assignment must be developed using the C programming
+      language
+      (C++ is not allowed), and your
+      code must run on the undergrad Linux machines. You are allowed
+      to use any of the C libraries available at the undergrad machines,
+      provided you change your Makefile to allow the code to run using a
+      simple "make" command (more details about this below).
+      <b>Warning:</b>Your code must run on the undergrad machines. If you 
+      are using your own machine, even if it is Linux, it is possible that
+      code developed on that machine will not compile or run properly on 
+the department Linux machines. Different compilers, library versions, etc., could
+      result in different behaviours or even the inability for the program to
+      compile. So, should you use your own machine, be sure to allow time 
+      to get it to run on the department machines, just in case. 
+
+
+</span>
+</p>
+<p class="c1">
+	<span class="c0">Similar to assignment 2, the client and server communicate requests and responses
+      between each other use the Real-Time Streaming Protocol (RTSP) and send
+      the video data using the Real-time Transfer Protocol (RTP). However, due
+      to limitations regarding firewalls and network rules in place at UBC, the
+      RTP transfer will be interleaved in the same connection as RTSP. This
+      means that both control and data will use the same TCP connection, and
+      there will be rules in place to allow the client to separate RTSP
+      and RTP traffic.</span>
+</p>
+<p class="c1">
+	<span class="c0">We have
+      provided you with an executable JAR file with the implementation 
+of an
+      RTSP client. Your task is to
+      implement the RTSP and RTP protocols in the server. No skeleton 
+code is provided, however you will find useful snippets of code below to
+ help you
+      with simple tasks. A sample Makefile is also provided, and you are
+      welcome to change it as needed.</span>
+</p>
+<p class="c1">
+	<span class="c0">When implementing this assignment you should write 
+small pieces of code and then test and verify their functionality before
+ proceeding. Implement the assignments functionality incrementally in 
+the order it is presented in the description. </span>
+</p>
+<h3 class="c2"><a name="h.c04bwqvyz9an"></a><span class="c0">Part A:
+    Streaming video content from a file</span></h3>
+<p class="c1">
+	<span class="c0">In part A you will create a server that will accept TCP
+      connections and handle RTSP traffic through these connections. Your
+      server will read a single argument from the command line, corresponding
+      to the port number that will be used to accept connections. Your code is
+      to print an error message if no argument is provided.</span>
+</p>
+<p class="c1">
+	<span class="c0">When running your code, you must first start your server
+      with a port of your choice (it will need to be between 1025 and 65535,
+      unless you are root). Then you
+      must start the provided client and provide the name of the host the server is
+      running and the and the port number the server is using. Note that, although
+      the client is able to support simple error scenarios, it is not
+      particularly robust, so don't be surprised if the client crashes or
+      doesn't function properly if your server isn't working. Basically, 
+      to get a good user experience your server will need to be running 
+      properly. Also note that the client will play the frames as it receives
+      them from the server (in other words, there is no buffering or any other
+      technique like the ones you used for part B of assignment 2). This means
+      it is the server's responsibility to send the frames at the proper time
+      and order.
+</span>
+</p>
+<p class="c1">
+	<span class="c0">Your code is expected to handle multiple simultaneous
+      connections, without interference between these connections. You are
+      strongly encouraged to use threads for this purpose, however the use of
+      forking is also allowed, as is an event driven approach using 
+      <em>select()</em>. Note that the use of threads simplifies
+      debugging of your code, but it also means that global and static
+      variables affect other running threads if you don't handle them correctly.</span>
+</p>
+<p class="c1">
+	<span class="c0">Once a connection is accepted, your server will wait for
+      a complete RTSP request, parse it, process it correctly, and return a complete
+      RTSP response. As in assignment 2, a complete RTSP request is composed of an
+      initial line containing a method, a URL and the RTSP version, optional header
+      lines containing additional information, followed by an empty line indicating the end of the
+      request. Similarly a complete RTSP response contains a line including the
+      RTSP version, a response code and a message, followed by optional header
+      lines and finished by an empty line. All successful responses need to
+      include at least two header lines: CSeq and Session.</span>
+</p>
+<p class="c1">
+	<span class="c0">If the method you receive is SETUP, you must open the
+      video file indicated in the request URL (corresponding to a file
+      relative to the current working directory). If the file cannot be
+      properly opened you must return an error response, but you should not
+      close the socket connection or finish the thread. If you receive a SETUP
+      request when a file is already open, you must return an error response
+      as well. In case of success, you must generate a random session number
+      and include it in the response.</span>
+</p>
+<p class="c1">
+	<span class="c0">Since in this assignment the video data is interleaved
+      with the RTSP control, there will be a different Transport header value
+      as compared to assignment 2. In this case, Transport will replace the
+      "client_port" keyword with "interleaved", indicating that data will not
+      use a new connection, but the existing connection. You are not required
+      to parse the Transport header, you can assume that the value will
+      indicate an interleaved data. </span>
+</p>
+<p class="c1">
+	<span class="c0">If the method you receive is PLAY, you will start a new
+      timer that will "fire" every 40 ms (25 frames per second) and send to the 
+      client a 
+      successful response that includes the  same session number used in the
+      previous SETUP response. The timer will be responsible for sending a single
+      frame of the video to the client. Once all
+      frames have been read from the file, the timer will stop. Note that it
+      is very important that the code that is execute when the 
+      timer fires  takes less than 40 ms to run, or
+      else there will be overlap of timer runs. An error response is to be
+      sent if you receive PLAY without a previous SETUP.</span>
+</p>
+<p class="c1">
+	<span class="c0">A video frame must be sent in JPEG or PNG format,
+      encapsulated in an RTP packet (described in the previous
+      assignment). However, since the data will be interleaved with the RTSP
+      traffic, a prefix must be included to avoid confusion between 
+      responses and RTP packets. This prefix, in RTSP, is comprised of 4 bytes: a dollar sign
+      ("$", ASCII 0x24), followed by a byte indicating the channel in use (in
+      your case this is always zero), followed by two bytes containing the
+      length of the RTP packet in <a href="http://en.wikipedia.org/wiki/Endianness#Endianness_in_networking">network order</a> (i.e., most significant byte
+      first). This length must include the RTP packet header and payload, but
+      should not include the four bytes of the prefix. Note that both the
+      channel number and the length are represented in binary format (not a
+      string representation), similar to what you see in the RTP header fields
+      such as the timestamp and sequence number.</span>
+</p>
+<p class="c1">
+	<span class="c0">An RTSP request with method PLAY will include a header
+      line named "Scale". This line will contain a single number corresponding
+      to the speed of play. A scale of 1 indicates regular playback speed; a
+      scale of 2 indicates that playback will happen twice as fast as regular,
+      and so on. You are expected to follow this information when sending
+      frames to the client. Note, however, that the frame rate will continue
+      to be the same, and the playback will only affect which frames are
+      sent. In other words, if scale is 2, every other frame will be sent, and
+      other frames will be skipped. If scale is 4, you will send one frame
+      every 40 ms, and skip 3 frames in between, and so forth. The RTSP
+      specification allows for a negative scale, to indicate backwards
+      playback, but you are not required to support that.</span>
+</p>
+<p class="c1">
+	<span class="c0">If you receive an RTSP request with method PAUSE, you
+      will stop the currently running timer and send a successful response, but will keep the video file
+      open. A PLAY following this PAUSE will continue where the previous
+      streaming stopped.</span>
+</p>
+<p class="c1">
+	<span class="c0">If you receive an RTSP request with method TEARDOWN, you
+      will stop the currently running timer (if it is running), will close the
+      video file and return a successful response. You must keep the
+      connection open and change the state in such a way that further SETUP
+      requests are accepted for new files.</span>
+</p>
+<p class="c1">
+	<span class="c0">You may assume that you will receive a valid RTSP request
+      ending with an empty line, however your server must be robust enough to
+      handle error cases. Some possible error cases you must be able to handle
+      include (but are not limited to) receiving methods when in the wrong state (e.g., a PLAY without
+      a SETUP), files that don't exist, and unexpected connection interruptions.</span>
+</p>
+<p class="c1">
+	<span class="c0">Your server should not expect any data to come from the
+      standard input (stdin). You are welcome to print any debugging messages
+      in the terminal (stdout/stderr), however having a clear indication of
+      what is happening in each stage might help the TAs understand your code
+      better when marking.</span>
+</p>
+
+<h4 class="c2"><a name="h.yn3p23u2cc6"></a><span class="c0">Compiling your Code</span></h4>
+<p class="c1">
+	<span class="c0">You are provided with a sample Makefile that assumes your
+      code includes the files <tt>main.c</tt> and <tt>rtspd.c</tt> and the
+      include <tt>rtspd.h</tt>. You can modify this file as necessary,
+      however you must make sure that by running in a terminal:</span>
+</p>
+<p class="c2 c14">
+	<span class="c0"><tt>make</tt></span>
+</p>
+<p class="c1">
+	<span class="c0">an executable file named rtspd is generated, and runs
+      according to the described specification.</span>
+</p>
+
+<h3 class="c2"><a name="h.fclxxjkebbd6"></a><span class="c0">Part B: Serving a
+video from the cloud</span></h3>
+<p class="c1">
+	<span class="c0">As an extension of the server created for part A, you
+      will now create a new server that, instead of reading a video file directly,
+      obtains its data from a key/value cloud storage service. You will connect to a set
+      of cloud servers and request specific video frames, and then serve these
+      frames to your client similarly to the behaviour of part A. The image
+      below shows the structure of the network.</span>
+</p>
+<img src="Assignment%203_files/image02.png">
+<p class="c1">
+	<span class="c0">The objective of this assignment is to build a real
+      service that is able to simultaneously serve multiple users, while
+      depending on back-end services provided by other systems. Existing
+      Internet-scale systems heavily depend on key/value storage systems to
+      store data reliably.</span>
+</p>
+<p class="c1">
+	<span class="c0">The storage cloud has been setup as a single service for
+      the entire class as a group of "cloud servers". The cloud servers each
+      store different frames from different videos. The cloud servers are
+      intended to communicate only with streaming servers, not clients.</span>
+</p>
+<p class="c1">
+	<span class="c0">Your server will receive requests from clients as with
+      part A. However, the URL of the video will start with
+      "cloud://", followed by a video name. Similarly, when requesting a video
+      in the RTSP client, you are expected to include "cloud://" before the
+      video name. For example, a request to open the
+      video "distributed_7" will contain in the first line the string:</span>
+</p>
+<pre>SETUP cloud://distributed_7 RTSP/1.0
+CSeq: 1
+Transport: RTP/TCP; interleaved=0</pre>
+<p class="c1">
+	<span class="c0">You are provided with 2 videos for testing: "correct" and
+      "distributed". The difference between these videos is related to how
+      distributed they are among different servers, and your solution must work
+      with both of them. To balance the load among
+      the different cloud servers, each of
+      these videos is available in 10 different names through separate cloud
+      servers. To help with load balancing you are encouraged to use the server corresponding to the last
+      digit of your student ID. So, if your student ID is 12345678, you should
+      use, for testing, the videos "correct_8" and "distributed_8". 
+      (Keep in mind that all the files that start with correct are the same as
+      are all the ones that start with distributed.) 
+</span>
+</p>
+<p class="c1">
+	<span class="c0">Each frame of the different videos may be stored in a
+      different cloud server. You are expected to connect to the server associated
+      to each individual frame (using a regular TCP socket) and request the
+      frame from that cloud server. To obtain the cloud server associated to
+      each frame, you must call the function get_cloud_server(). This function
+      is available by linking 
+      cloud_helper.o (See the link in the <em>Provided files and resources</em>
+      section) with your code and including
+      the following line in the beginning of your C file:</span>
+</p>
+<pre>#include "cloud_helper.h"</pre>
+<p class="c1">
+	<span class="c0">The cloud_helper.o file was compiled in the undergrad
+      Linux environment. Although the .o file  might work in a different setting,
+      such as your laptop or home computer, it is not guaranteed to work in
+      such an environment, so you are highly encouraged to test your code in
+      the Linux undergrad computers. It definitely will not work 
+      on a Windows or Mac. </span>
+</p>
+<p class="c1">
+	<span class="c0">Once connected to a cloud server, your request must
+      follow the format: <em>video_name:frame_number</em> followed by a
+      line-feed character ("\n"). For example to request the frame 23 from
+      video "distributed_4" you should send the string "distributed_4:23\n" to
+      the cloud server. The server will respond with the length represented as
+      a decimal 5-byte ASCII string, corresponding to the size of the frame,
+      followed by the frame itself. For example, if the payload content of the
+      frame is "abcdefg", the cloud server will send "00007abcdefg". Note that,
+      depending on the size of the
+      frame, you may not receive it in a single packet (thus it may require
+      more than one call to recv). Also note that, if the cloud server doesn't
+      understand your request, it will
+      close the connection without sending any data. If the format of the
+      request is correct, but the video frame you
+      requested was not found, a zero-sized frame will be sent (in other
+      words, only the string "00000" will be received), but the connection will
+      be kept alive.</span>
+</p>
+<p class="c1">
+	<span class="c0">Although the cloud servers are able to serve
+      multiple frames in the same connection in sequence, two consecutive
+      frames in the same video might not be
+      served by the same cloud server. Even though you may want to start your
+      assignment by closing the connection after each frame, in the final
+      version of the assignment you should make every effort to keep
+      the connection with cloud servers alive and use an active connection
+      when possible. In other words, you should only establish a new connection when a
+      frame is served by a different cloud server for whom you don't have an
+      active connection, or when the connection with the cloud server has been
+      previously closed by the cloud server. Note that it is possible that more than one
+      connection with a cloud server may be active at a specific point in time,
+      but you may assume that no more than five cloud servers will be used for
+      the same video.</span>
+</p>
+<p class="c1">
+	<span class="c0">In addition to "correct_X" and "distributed_X", two video
+      files, called "missing_X" and "unpredictable_X" (replacing X by a digit
+      0-9) are available. These videos will result in unexpected behaviours
+      similar to the ones found in the second part of assignment 2. Although
+      the majority of grades for part B will be focused on the
+      correct/distributed videos, for full marks you are expected to have a
+      server that is robust enough to handle unpredictable videos and serve them to
+      the client as smoothly as possible.</span>
+</p>
+<p class="c1">
+	<span class="c0">You are not required to serve regular video files (like
+      the ones in part A) in this version of the assignment, although you are
+      encouraged to do so if you have time.</span>
+</p>
+
+<h3 class="c2"><a name="h.if35jrsh57vq"></a><span class="c0">Provided files
+and resources</span></h3>
+<ol class="c6" start="1">
+	<li class="c5
+c2"><span class="c0"><a href="http://www.ugrad.cs.ubc.ca/%7Ecs317/2012W2/Assignments/a3/RTSPClient.jar">RTSPClient.jar</a>: a client to be
+used to test your server.</span></li>
+	<li class="c5 c2"><span class="c0"><a href="http://www.ugrad.cs.ubc.ca/%7Ecs317/2012W2/Assignments/a3/Makefile">Makefile</a>: a sample
+Makefile that can be used to compile your code.</span></li>
+	<li class="c5 c2"><span class="c0"><a href="http://www.ugrad.cs.ubc.ca/%7Ecs317/2012W2/Assignments/a3/cloud_helper.o">cloud_helper.o</a>
+        and <a href="http://www.ugrad.cs.ubc.ca/%7Ecs317/2012W2/Assignments/a3/cloud_helper.h">cloud_helper.h</a>: helper functions to be
+        used in part B.</span></li>
+	<li class="c5 c2"><span class="c0">For information about sample video
+        files,
+        check <a href="https://piazza.com/class#winterterm22012/cpsc317/278">this
+          Piazza post</a>.</span></li>
+</ol>
+
+
+<h3 class="c2"><a name="h.if35jrsh57vq"></a><span class="c0">Handin Instructions</span></h3>
+<p class="c2">
+	<span class="c0">If you worked with a partner, only one of you is to hand
+      in the assignment. One of you must handin for the course <em>cs317</em>
+      and the assignment <em>a3</em>. Your submission is to include at least the following files:</span>
+</p>
+<ol class="c6" start="1">
+	<li class="c5 c2"><span class="c0">All C files (*.c, *.h) required to
+        compile your code, including the ones provided (if applicable).</span></li>
+    <li class="c5 c2"><span class="c0">A working Makefile that compiles the C
+files into executables rtspd (for part A) and cloudrtspd (for part B).</span></li>
+	<li class="c2 c5"><span class="c0">A file called
+        README.txt containing your name, student number, CS login id, your
+        partner’s name, student number, and CS login ID, and any messages that you want to pass to the TAs.</span></li>
+</ol>
+<p class="c2">
+	<span class="c0">You can hand in your assignment as many times as you 
+want before the due date. Once the due date has passed, submissions are 
+considered late. </span>
+</p>
+
+<h3 class="c2"><a name="h.if35jrsh57vq"></a><span class="c0">Appendix A:
+sample code and resources</span></h3>
+
+<p class="c1">
+	<span class="c0">For reference and samples related to the use of socket
+libraries, check <a href="http://beej.us/guide/bgnet">Beej's Guide</a>. In
+particular, check the sample server and client in section 6.</span>
+</p>
+<p class="c1">
+	<span class="c0">The following code can be used to create a new thread to
+handle a specific client. The thread will run the function serve_client
+passing as parameter the value of client_fd.</span>
+</p>
+<pre>#include &lt;stdint.h&gt;
+#include &lt;pthread.h&gt;
+
+void *serve_client(void *ptr) {
+  // Converts ptr back to integer.
+  int client_fd = (int) (intptr_t) ptr;
+  // ...
+}
+
+int main() {
+    // ...
+    // Required variables
+    int client_fd;    // Socket returned by accept
+    pthread_t thread; // Thread to be created
+    // Creates the thread and calls the function serve_client.
+    pthread_create(&amp;thread, NULL, serve_client, (void *) (intptr_t) client_fd);
+    // Detaches the thread. This means that, once the thread finishes, it is destroyed.
+    pthread_detach(thread);
+    // ...
+}
+</pre>
+<hr>
+<p class="c1">
+	<span class="c0">The following snippets of code are used to handle a video
+file using the OpenCV library.</span>
+</p>
+<pre>#include &lt;cv.h&gt;
+#include &lt;highgui.h&gt;
+
+CvCapture *video;
+IplImage *image;
+CvMat *thumb;
+CvMat *encoded;
+
+// Open the video file.
+video = cvCaptureFromFile(filename);
+if (!video) {
+  // The file doesn't exist or can't be captured as a video file.
+}
+
+// Obtain the next frame from the video file
+image = cvQueryFrame(video);
+if (!image) {
+  // Next frame doesn't exist or can't be obtained.
+}
+
+// Convert the frame to a smaller size (WIDTH x HEIGHT)
+thumb = cvCreateMat(HEIGHT, WIDTH, CV_8UC3);
+cvResize(img, thumb, CV_INTER_AREA);
+
+// Encode the frame in JPEG format with JPEG quality 30%.
+const static int encodeParams[] = { CV_IMWRITE_JPEG_QUALITY, 30 };
+encoded = cvEncodeImage(".jpeg", thumb, encodeParams);
+// After the call above, the encoded data is in encoded-&gt;data.ptr
+// and has a length of encoded-&gt;cols bytes.
+
+// Close the video file
+cvReleaseCapture(&amp;video);
+</pre>
+<p class="c1">
+	<span class="c0">A more detailed reference guide is found
+      <a href="http://docs.opencv.org/">here</a>. Note that this guide is
+focused primarily on C++ documentation, but most (if not all) functions also
+have a C equivalent. You will probably be more interested in the chapters
+about <a href="http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html">Reading
+  and Writing Images and Video</a>
+and <a href="http://docs.opencv.org/modules/core/doc/old_basic_structures.html">Basic
+  C Structures and Operations</a>.</span>
+</p>
+<hr>
+<p class="c1">
+  <span class="c0">The following snippets of code are used to manage a
+    timer. You can get more information <a href="http://man7.org/linux/man-pages/man2/timer_create.2.html">here</a>.</span>
+</p>
+<pre>#include &lt;sys/time.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;time.h&gt;
+
+// This struct is created to save information that will be needed by the timer,
+// such as socket file descriptors, frame numbers and video captures.
+struct send_frame_data {
+  int socket_fd;
+  // other fields
+};
+
+// This function will be called when the timer ticks
+void send_frame(union sigval sv_data) {
+  
+  struct send_frame_data *data = (struct send_frame_data *) sv_data.sival_ptr;
+  // You may retrieve information from the caller using data-&gt;field_name
+  // ...
+}
+
+// ...
+
+// The following snippet is used to create and start a new timer that runs
+// every 40 ms.
+struct send_frame_data data; // Set fields as necessary
+struct sigevent play_event;
+timer_t play_timer;
+struct itimerspec play_interval;
+
+memset(&amp;play_event, 0, sizeof(play_event));
+play_event.sigev_notify = SIGEV_THREAD;
+play_event.sigev_value.sival_ptr = &amp;data;
+play_event.sigev_notify_function = send_frame;
+
+play_interval.it_interval.tv_sec = 0;
+play_interval.it_interval.tv_nsec = 40 * 1000000; // 40 ms in ns
+play_interval.it_value.tv_sec = 0;
+play_interval.it_value.tv_nsec = 1; // can't be zero
+
+timer_create(CLOCK_REALTIME, &amp;play_event, &amp;play_timer);
+timer_settime(play_timer, 0, &amp;play_interval, NULL);
+
+// The following snippet is used to stop a currently running timer. The current
+// task is not interrupted, only future tasks are stopped.
+play_interval.it_interval.tv_sec = 0;
+play_interval.it_interval.tv_nsec = 0;
+play_interval.it_value.tv_sec = 0;
+play_interval.it_value.tv_nsec = 0;
+timer_settime(play_timer, 0, &amp;play_interval, NULL);
+
+// The following line is used to delete a timer.
+timer_delete(play_timer);
+
+</pre>
+<p class="c1">
+  <span class="c0">Since timer events can overlap with each other and with the
+    main client thread, you are strongly encouraged to employ semaphores to
+    avoid conflicts between threads. A good tutorial on semaphores is
+    found <a href="http://www.csc.villanova.edu/%7Emdamian/threads/posixsem.html">here</a>.</span>
+</p>
+
+
+</body></html>
